@@ -61,16 +61,4 @@ Rails.application.configure do
 
   # 修改默认区域设置（默认是 :en）
   config.i18n.default_locale = 'zh-CN'
-
-  # user devise mail 
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-     :address => "smtp.163.com",
-     :port => 25,
-     :domain => "163.com",
-     :authentication => :login,
-     :user_name => "virola@yeah.net", #你的邮箱
-     :password => "******" #你的密码
-   }
 end
