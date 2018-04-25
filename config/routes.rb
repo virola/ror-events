@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   end
   resources :sessions, only: [:new, :create, :destroy]
   
+  get 'events', to: 'events#all'
   get 'profile', to: 'members#show'
 
   # admin

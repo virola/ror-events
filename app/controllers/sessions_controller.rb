@@ -7,6 +7,7 @@ class SessionsController < ApplicationController
     respond_to do |format|
       if @member
         session[:current_member_id] = @member.id
+        session[:current_username] = @member.username
         format.html { redirect_to root_path, notice: 'welcome!' }
         format.json { render json: @member, status: :created, location: @member }
       else
@@ -20,6 +21,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:current_member_id] = nil
+    session[:current_username] = nil
     flash[:notice] = '退出成功'
     redirect_to root_path
   end

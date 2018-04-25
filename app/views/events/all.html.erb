@@ -1,4 +1,4 @@
-<h1>Events</h1>
+<h1>All Events</h1>
 
 <div class="operations">
   <%= link_to 'New Event', new_member_event_path %>
@@ -10,6 +10,7 @@
       <th>Description</th>
       <th>Is public</th>
       <th>Date</th>
+      <th>Member</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -21,6 +22,7 @@
         <td><%= event.description %></td>
         <td><%= event.is_public %></td>
         <td><%= event.date %></td>
+        <td><%= event.member_id %></td>
         <td><%= link_to 'Show', event %></td>
         <td><%= link_to 'Edit', edit_event_path(event) %></td>
         <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -30,4 +32,3 @@
 </table>
 
 <%= paginate @events %>
-

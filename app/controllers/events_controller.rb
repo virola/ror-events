@@ -3,11 +3,15 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :set_member, only: [:index, :create, :new]
 
+  def all
+    @events = Event.page(params[:page]).per(5)
+  end
+
   # GET /events
   # GET /events.json
   def index
     # @member = Member.
-    @events = Event.where(member_id: params[:member_id])
+    @events = Event.where(member_id: params[:member_id]).order(updated_at: :desc).page(params[:page]).per(5)
   end
 
   # GET /events/1
