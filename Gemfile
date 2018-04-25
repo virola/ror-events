@@ -13,6 +13,8 @@ gem 'kaminari'
 gem 'bcrypt', '~> 3.1.7'
 # i18n
 gem 'rails-i18n', '~> 5.1'
+# devise
+# gem 'devise'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.11'

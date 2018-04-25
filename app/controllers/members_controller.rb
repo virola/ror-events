@@ -1,4 +1,6 @@
 class MembersController < ApplicationController
+  before_action :authenticate_admin, only: [:index, :destroy]
+  before_action :authenticate_member, only: [:show, :edit, :update]
   before_action :set_member, only: [:show, :edit, :update, :destroy]
 
   # GET /members
@@ -28,7 +30,8 @@ class MembersController < ApplicationController
 
     respond_to do |format|
       if @member.save
-        format.html { redirect_to @member, notice: 'Member was successfully created.' }
+        # redirect_to new_session_path
+        format.html { redirect_to new_session_path, notice: 'Member was successfully created.' }
         format.json { render :show, status: :created, location: @member }
       else
         format.html { render :new }

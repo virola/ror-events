@@ -1,5 +1,4 @@
-<p id="notice"><%= notice %></p>
-
+<div class="col-12">
 <p>
   <strong>Name:</strong>
   <%= @event.name %>
@@ -25,5 +24,6 @@
   <%= @event.member_id %>
 </p>
 
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>
+<%= link_to '编辑', edit_event_path(@event) %>
+
+</div>

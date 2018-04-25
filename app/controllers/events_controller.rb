@@ -1,10 +1,13 @@
 class EventsController < ApplicationController
+  before_action :authenticate_member
   before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_member, only: [:index, :create, :new]
 
   # GET /events
   # GET /events.json
   def index
-    @events = Event.all
+    # @member = Member.
+    @events = Event.where(member_id: params[:member_id])
   end
 
   # GET /events/1
@@ -14,7 +17,7 @@ class EventsController < ApplicationController
 
   # GET /events/new
   def new
-    @event = Event.new
+    @event = Event.new(member_id: params[:member_id])
   end
 
   # GET /events/1/edit
@@ -63,6 +66,9 @@ class EventsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_member
+      @member = Member.find(params[:member_id])
+    end
     def set_event
       @event = Event.find(params[:id])
     end
