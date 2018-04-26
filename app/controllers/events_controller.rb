@@ -1,10 +1,10 @@
 class EventsController < ApplicationController
-  before_action :authenticate_member
+  before_action :authenticate_operation
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :set_member, only: [:index, :create, :new]
 
   def all
-    @events = Event.page(params[:page]).per(5)
+    @events = Event.order(updated_at: :desc).page(params[:page]).per(5)
   end
 
   # GET /events
@@ -31,11 +31,11 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
-    @event = Event.new(event_params)
+    @event = @member.events.new(event_params)
 
     respond_to do |format|
       if @event.save
-        format.html { redirect_to @event, notice: 'Event was successfully created.' }
+        format.html { redirect_to @event, notice: '创建成功' }
         format.json { render :show, status: :created, location: @event }
       else
         format.html { render :new }
@@ -49,7 +49,7 @@ class EventsController < ApplicationController
   def update
     respond_to do |format|
       if @event.update(event_params)
-        format.html { redirect_to @event, notice: 'Event was successfully updated.' }
+        format.html { redirect_to @event, notice: '更新成功' }
         format.json { render :show, status: :ok, location: @event }
       else
         format.html { render :edit }

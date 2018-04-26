@@ -4,6 +4,17 @@ zh-CN:
   minimum_length: '长度至少 %{length}'
   login: '登录'
   sign_up: '注册'
+  edit: '编辑'
+  change password: '修改密码'
+  member:
+    username: '用户名'
+    password: '密码'
+    bio: '个人简介'
+    password_confirmation: '密码确认'
+    birthday: '生日'
+    open_id: '微信open_id'
+    union_id: '微信union_id'
+    wechat: '微信授权'
   views:
     pagination:
       previous: '上一页'
@@ -17,12 +28,14 @@ zh-CN:
     attributes:
       member:
         username: '用户名'
+        bio: '个人简介'
         password: '密码'
         password_confirmation: '密码确认'
+        new_password: '新密码'
+        new_password_confirmation: '密码确认'
         birthday: '生日'
         open_id: '微信open_id'
         union_id: '微信union_id'
-        login: '登录'
       event:
         name: '名称'
         description: '内容'

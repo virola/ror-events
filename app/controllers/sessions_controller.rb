@@ -3,7 +3,11 @@ class SessionsController < ApplicationController
   end
  
   def create
-    @member = Member.find_by(open_id: member_params[:open_id]).try(:authenticate, member_params[:password])
+    if member_params[:username]
+      @member = Member.find_by(username: member_params[:username]).try(:authenticate, member_params[:password])
+    else
+      @member = Member.find_by(open_id: member_params[:open_id]).try(:authenticate, member_params[:password])
+    end
     respond_to do |format|
       if @member
         session[:current_member_id] = @member.id
@@ -28,6 +32,6 @@ class SessionsController < ApplicationController
  
   private
   def member_params
-    params.require(:session).permit(:open_id, :password)
+    params.require(:session).permit(:username, :open_id, :password)
   end
 end

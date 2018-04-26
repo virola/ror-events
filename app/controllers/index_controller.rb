@@ -1,5 +1,5 @@
 class IndexController < ApplicationController
   def index
-    # @debug_info = @_current_member
+    # @debug_info = Time.zone
   end
 end

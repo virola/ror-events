@@ -1,0 +1,22 @@
+<p>
+  <strong><%= t 'member.username' %>:</strong>
+  <%= @member.username %>
+</p>
+
+<p>
+  <strong><%= t 'member.bio' %>:</strong>
+  <%= @member.bio %>
+</p>
+
+<p>
+  <strong><%= t 'member.wechat' %>:</strong>
+  <%= @member.open_id ? '已授权': '未授权' %>
+</p>
+
+<p>
+  <strong><%= t('member.birthday') %>:</strong>
+  <%= @member.birthday %>
+</p>
+
+<%= link_to t('edit'), profile_edit_path, :class => 'btn btn-primary' %>
+<%= link_to t('change password'), profile_password_path, :class => 'btn btn-primary' %>

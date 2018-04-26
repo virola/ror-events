@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   # 启动了CSRF安全性功能，所有非GET的HTTP request都必须带有一个Token参数才能存取
-  protect_from_forgery
+  # protect_from_forgery
   # alert
   add_flash_types :alert
 
@@ -26,6 +26,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # 验证操作权限
+  # 必须是管理员或用户本人操作
+  def authenticate_operation
+    unless @_current_member && @_current_member.id < 4 || (@_current_member.id == params[:member_id])
+      flash[:alert] = '没有管理权限'
+      redirect_to root_path
+    end
+  end
+
   def authenticate_admin
     unless @_current_member && @_current_member.id < 4
       flash[:alert] = '没有管理权限'
@@ -39,7 +48,6 @@ class ApplicationController < ActionController::Base
       flash[:alert] = '请先登录'
       redirect_to new_session_path
     end
-    # @current_member = current_member && current_member[:id]
   end
 
   private
@@ -50,7 +58,6 @@ class ApplicationController < ActionController::Base
   def current_member
     @_current_member ||= session[:current_member_id] &&
       Member.find_by(id: session[:current_member_id])
-    # print()
   end
 
   # def set_timezone

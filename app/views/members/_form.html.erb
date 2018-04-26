@@ -1,44 +1,12 @@
-<%= form_with(model: member, local: true) do |form| %>
-  <% if member.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(member.errors.count, "error") %> prohibited this member from being saved:</h2>
-      <ul>
-      <% member.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= bootstrap_form_for(member, local: true) do |form| %>
+  <%= form.error_messages %>
 
-  <div class="form-group">
-    <%= form.label :username %>
-    <%= form.text_field :username, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :password %>
-    <%= form.password_field :password, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :bio %>
-    <%= form.text_area :bio, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :open_id, '微信open_id' %>
-    <%= form.text_field :open_id, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :union_id, '微信union_id' %>
-    <%= form.text_field :union_id, class: 'form-control' %>
-  </div>
+  <%= form.text_field :username, class: 'form-control', :autofocus => true, :required => true %>
+  <%= form.password_field :password, class: 'form-control', :required => true %>
+  <%= form.password_field :password_confirmation, class: 'form-control', :required => true %>
+  <%= form.text_area :bio, class: 'form-control' %>
+  <%= form.text_field :open_id, class: 'form-control' %>
+  <%= form.text_field :union_id, class: 'form-control' %>
 
   <div class="form-group">
     <%= form.label :birthday %>

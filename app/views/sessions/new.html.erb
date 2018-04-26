@@ -1,16 +1,12 @@
 <!-- app/views/sessions/new.html.erb -->
  
 <h1><%= t(:login)%> </h1> 
-<%= form_for :session, url: sessions_path do |f| %>
-  <div class="form-group">
-    <%= f.label :open_id %>
-    <%= f.text_field :open_id, class: 'form-control' %>
-  </div>
+<%= bootstrap_form_for :session, url: sessions_path do |f| %>
+  <%= f.text_field :open_id, class: 'form-control' %>
+  or
+  <%= f.text_field :username, class: 'form-control' %>
  
-  <div class="form-group">
-    <%= f.label :password %>
-    <%= f.password_field :password, class: 'form-control' %>
-  </div>
+  <%= f.password_field :password, class: 'form-control' %>
  
   <div class="form-group"><%= f.button t(:login), class: 'btn btn-primary' %></div>
  

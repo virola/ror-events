@@ -1,0 +1,18 @@
+<h1>编辑个人资料</h1>
+
+<%= bootstrap_form_for(@member, local: true, url: profile_update_path) do |form| %>
+  <%= form.error_messages %>
+
+  <%= form.hidden_field :username %>
+  <%= form.text_area :bio, class: 'form-control', :autofocus => true %>
+
+  <div class="form-group">
+    <%= form.label :birthday %>
+    <%= form.date_select :birthday, :start_year => 1920, class: 'form-control' %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit '确定提交', class: 'btn btn-primary' %>
+    <%= link_to '返回', profile_path, :class => 'btn' %>
+  </div>
+<% end %>

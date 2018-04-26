@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>小小的日历</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
@@ -15,23 +16,30 @@
 <body>
 <header class="navbar navbar-expand-lg navbar-dark bg-dark">
   <%= link_to '首页', root_path, class: 'navbar-brand' %>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <%# <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
-  </button>
+  </button> %>
   <ul class="navbar-nav mr-auto" id="navbar-content">
-  <% if session[:current_member_id] %>
+  <% if session[:current_member_id] -%>
+    <% if @_current_member.role == 'admin' -%>
     <li class="nav-item">
       <%= link_to "Members", members_path, class: "nav-link" + (current_page?('/members') ? ' active': '') %>
     </li>
     <li class="nav-item">
-      <%= link_to "Events", member_events_path(session[:current_member_id]), class: 'nav-link' + (current_page?("/members/#{session[:current_member_id]}/events") ? ' active': '') %>
+      <%= link_to "Events", events_path, class: 'nav-link' + (current_page?("/events") ? ' active': '') %>
     </li>
-  <% else %>
+    <% end -%>
+    <li class="nav-item">
+      <%= link_to "My Events", member_events_path(session[:current_member_id]), class: 'nav-link' + (current_page?("/members/#{session[:current_member_id]}/events") ? ' active': '') %>
+    </li>
+  <% else -%>
     <li class="nav-item"><%= link_to '登录', new_session_path, class: 'nav-link' %></li>
     <li class="nav-item"><%= link_to '注册', new_member_path, class: 'nav-link' %></li>
   <% end -%>
   </ul>
-  <div class="float-right"><%= link_to "#{session[:current_username]}, 退出", session_path(session[:current_member_id]), method: 'delete', class: 'text-white' %></div>
+  <% if session[:current_member_id] -%>
+  <div class="float-right"><%= link_to "#{session[:current_username]}", profile_path, :class => 'text-white' %> <%= link_to "退出登录", session_path(session[:current_member_id]), method: 'delete', class: 'text-white' %></div>
+  <% end -%>
 </header>
 
 <div class="container-fluid flash">
