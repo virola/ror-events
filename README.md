@@ -1,26 +1,47 @@
-# README
+# A ruby-on-rails Website
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+一个基于 ruby on rails 写的小应用。
+数据模型就是简单的
+> 用户member => 日历事件events
 
-Things you may want to cover:
+初学ruby on rails，准备练习给小程序写API。
 
-* Ruby version
+## Build Setup
+### install ruby on rails
+```
+brew install ruby
+sudo gem install rails --no-ri --no-rdoc
+```
+### install dependencies
+```
+bundle install
+```
 
-* System dependencies
+### Configuration
+database: mysql  => config/database.yml
 
-* Configuration
+需要在数据库里新建好数据库。
 
-* Database creation
+### Database initialization
+```
+rake db:migrate
+```
 
-* Database initialization
-
-* How to run the test suite
+### dev server
 ```
 rails server
 ```
-* Services (job queues, cache servers, search engines, etc.)
+## Versions
+- ruby 2.5.1
+- Rails 5.2.0 
 
-* Deployment instructions
-
-* ...
+## dependencies
+```yml
+# Gemfile
+# 分页插件
+gem 'kaminari'
+# 密码加密
+gem 'bcrypt', '~> 3.1.7'
+# 国际化 i18n
+gem 'rails-i18n', '~> 5.1'
+```

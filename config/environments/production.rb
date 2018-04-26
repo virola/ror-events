@@ -94,4 +94,5 @@ Rails.application.configure do
 
   # 修改默认区域设置（默认是 :en）
   config.i18n.default_locale = 'zh-CN'
+  config.time_zone = 'Beijing'
 end
