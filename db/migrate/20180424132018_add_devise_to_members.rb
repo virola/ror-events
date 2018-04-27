@@ -22,8 +22,8 @@ class AddDeviseToMembers < ActiveRecord::Migration[5.2]
       t.string   :last_sign_in_ip
     end
 
-    add_index :members, :username,             unique: true
-    add_index :members, :open_id,              unique: true
+    # add_index :members, :username,             unique: true
+    # add_index :members, :open_id,              unique: true
     # add_index :members, :reset_password_token, unique: true
     # add_index :members, :confirmation_token,   unique: true
     # add_index :members, :unlock_token,         unique: true

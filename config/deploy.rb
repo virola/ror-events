@@ -16,7 +16,8 @@ set :deploy_to, '/root/wwwroot/ror.deploy'
 set :repository, 'git@github.com:virola/ror-events.git'
 set :branch, 'master'
 
-set :shared_paths, ['config', 'log', 'tmp/sockets', 'tmp/pids', 'public/uploads']
+set :shared_paths, ['log', 'tmp/sockets', 'tmp/pids', 'public/uploads']
+set :shared_files, ['config/database.yml', 'config/secrets.yml']
 
 task :remote do
   # If you're using rbenv, use this to load the rbenv environment.
@@ -42,10 +43,6 @@ end
 # Put any custom commands you need to run at setup
 # All paths in `shared_dirs` and `shared_paths` will be created on their own.
 task :setup do
-  # 服务器项目目录中需要创建的文件夹
-  # shared/vendor/bundle
-  # /shared/log
-  
   # 在服务器项目目录的shared中创建log文件夹
   command %{mkdir -p "#{fetch(:shared_path)}/log"}
   command %{chmod g+rx,u+rwx "#{fetch(:shared_path)}/log"}
@@ -85,7 +82,7 @@ end
 desc "Deploys the current version to the server."
 task :deploy do
   # uncomment this line to make sure you pushed your local branch to the remote origin
-  # invoke :'git:ensure_pushed'
+  invoke :'git:ensure_pushed'
   deploy do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.
@@ -110,6 +107,14 @@ task :deploy do
 
   # you can use `run :local` to run tasks on local machine before of after the deploy scripts
   # run(:local){ say 'done' }
+end
+
+task :test do 
+  comment %{----->testing...}
+  deploy do
+    invoke :'git:clone'
+    invoke :'deploy:link_shared_paths'
+  end
 end
 
 # For help in making your deploy script, see the Mina documentation:
