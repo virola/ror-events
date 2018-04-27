@@ -1,11 +1,11 @@
 class AdminController < ApplicationController
+  USERS = { 'virola' => 'rubyadmin' }
+  before_action :authenticate
   
   def index
     
   end
 
-  USERS = { 'virola' => 'rubyadmin' }
-  before_action :authenticate
  
   private
  
