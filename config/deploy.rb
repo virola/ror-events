@@ -15,7 +15,6 @@ set :domain, 'root@45.77.22.76'
 set :deploy_to, '/root/wwwroot/ror.deploy'
 set :repository, 'git@github.com:virola/ror-events.git'
 set :branch, 'master'
-# set :term_mode, nil
 
 set :shared_paths, ['config/database.yml', 'config/application.yml', 'log', 'tmp/sockets', 'tmp/pids', 'public/uploads']
 
@@ -113,3 +112,29 @@ end
 # For help in making your deploy script, see the Mina documentation:
 #
 #  - https://github.com/mina-deploy/mina/tree/master/docs
+
+# puma settings
+set :forward_agent, true
+set :app_path, lambda { "#{deploy_to}/#{current_path}" }
+set :stage, 'production'
+
+namespace :puma do 
+  desc "Start the application"
+  task :start do
+    queue 'echo "-----> Start Puma"'  
+    queue "cd #{app_path} && RAILS_ENV=#{stage} && bin/puma.sh start", :pty => false
+  end
+
+  desc "Stop the application"
+  task :stop do
+    queue 'echo "-----> Stop Puma"'
+    queue "cd #{app_path} && RAILS_ENV=#{stage} && bin/puma.sh stop"
+  end
+
+  desc "Restart the application"
+  task :restart do
+    queue 'echo "-----> Restart Puma"'
+    queue "cd #{app_path} && RAILS_ENV=#{stage} && bin/puma.sh restart"
+  end
+end
+
