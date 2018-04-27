@@ -1,3 +1,4 @@
+require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
 # require 'mina/rbenv'  # for rbenv support. (https://rbenv.org)
@@ -14,21 +15,29 @@ set :domain, 'root@45.77.22.76'
 set :deploy_to, '/root/wwwroot/ror.deploy'
 set :repository, 'git@github.com:virola/ror-events.git'
 set :branch, 'master'
+# set :term_mode, nil
 
 set :shared_paths, ['config/database.yml', 'config/application.yml', 'log', 'tmp/sockets', 'tmp/pids', 'public/uploads']
 
-task :remote_environment do
+task :remote do
   # If you're using rbenv, use this to load the rbenv environment.
   # Be sure to commit your .ruby-version or .rbenv-version to your repository.
   # invoke :'rbenv:load'
 
   # For those using RVM, use this to load an RVM version@gemset.
-  # invoke :'rvm:use', 'ruby-1.9.3-p125@default'
+  invoke :'rvm:use', 'ruby-2.5.1'
+end
+
+task :environment do
+  queue! %[source /usr/local/rvm/scripts/rvm]
+  queue! %[rvm use ruby-2.5.1]
 end
 
 desc "Shows logs."
 task :logs do
-  queue %[cd #{deploy_to}/current && tail -f log/production.log]
+  in_path("#{fetch(:deploy_to)}/current") do
+    command %{tail -f log/production.log} # => cd some/new/path && ls -al
+  end
 end
 
 # Put any custom commands you need to run at setup
@@ -36,39 +45,39 @@ end
 task :setup do
   
   # 在服务器项目目录的shared中创建log文件夹
-  queue! %[mkdir -p "#{deploy_to}/#{shared_path}/log"]
-  queue! %[chmod g+rx,u+rwx "#{deploy_to}/#{shared_path}/log"]
+  command %{mkdir -p "#{fetch(:shared_path)}/log"}
+  command %{chmod g+rx,u+rwx "#{fetch(:shared_path)}/log"}
 
   # 在服务器项目目录的shared中创建config文件夹 下同
-  queue! %[mkdir -p "#{deploy_to}/#{shared_path}/config"]
-  queue! %[chmod g+rx,u+rwx "#{deploy_to}/#{shared_path}/config"]
+  command %{mkdir -p "#{fetch(:shared_path)}/config"}
+  command %{chmod g+rx,u+rwx "#{fetch(:shared_path)}/config"}
 
-  queue! %[touch "#{deploy_to}/#{shared_path}/config/database.yml"]
-  queue! %[touch "#{deploy_to}/#{shared_path}/config/secrets.yml"]
+  command %{touch "#{fetch(:shared_path)}/config/database.yml"}
+  command %{touch "#{fetch(:shared_path)}/config/secrets.yml"}
 
   # puma.rb 配置puma必须得文件夹及文件
-  queue! %[mkdir -p "#{deploy_to}/shared/tmp/pids"]
-  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/tmp/pids"]
+  command %{mkdir -p "#{fetch(:deploy_to)}/shared/tmp/pids"}
+  command %{chmod g+rx,u+rwx "#{fetch(:deploy_to)}/shared/tmp/pids"}
 
-  queue! %[mkdir -p "#{deploy_to}/shared/tmp/sockets"]
-  queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/tmp/sockets"]
+  command %{mkdir -p "#{fetch(:deploy_to)}/shared/tmp/sockets"}
+  command %{chmod g+rx,u+rwx "#{fetch(:deploy_to)}/shared/tmp/sockets"}
 
-  queue! %[touch "#{deploy_to}/shared/config/puma.rb"]
-  queue  %[echo "-----> Be sure to edit 'shared/config/puma.rb'."]
+  command %{touch "#{fetch(:deploy_to)}/shared/config/puma.rb"}
+  comment  %{-----> Be sure to edit 'shared/config/puma.rb'.}
 
   # tmp/sockets/puma.state
-  queue! %[touch "#{deploy_to}/shared/tmp/sockets/puma.state"]
-  queue  %[echo "-----> Be sure to edit 'shared/tmp/sockets/puma.state'."]
+  command %{touch "#{fetch(:deploy_to)}/shared/tmp/sockets/puma.state"}
+  comment  %{-----> Be sure to edit 'shared/tmp/sockets/puma.state'.}
 
   # log/puma.stdout.log
-  queue! %[touch "#{deploy_to}/shared/log/puma.stdout.log"]
-  queue  %[echo "-----> Be sure to edit 'shared/log/puma.stdout.log'."]
+  command %{touch "#{fetch(:deploy_to)}/shared/log/puma.stdout.log"}
+  comment  %{-----> Be sure to edit 'shared/log/puma.stdout.log'.}
 
   # log/puma.stdout.log
-  queue! %[touch "#{deploy_to}/shared/log/puma.stderr.log"]
-  queue  %[echo "-----> Be sure to edit 'shared/log/puma.stderr.log'."]
+  command %{touch "#{fetch(:deploy_to)}/shared/log/puma.stderr.log"}
+  comment  %{-----> Be sure to edit 'shared/log/puma.stderr.log'.}
 
-  queue  %[echo "-----> Be sure to edit '#{deploy_to}/#{shared_path}/config/database.yml'."]
+  comment  %{-----> Be sure to edit '#{fetch(:shared_path)}/config/database.yml'.}
 end
 
 desc "Deploys the current version to the server."
@@ -90,6 +99,10 @@ task :deploy do
         command %{mkdir -p tmp/}
         command %{touch tmp/restart.txt}
       end
+    end
+
+    on :clean do
+      command %{log "failed deployment"}
     end
   end
 
