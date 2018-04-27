@@ -2,7 +2,7 @@
 ###############################
 # puma的操作脚本
 # /root/wwwroot/ror.deploy
-APP_PATH = /root/wwwroot/ror.deploy/shared
+APP_PATH=/root/wwwroot/ror.deploy/shared
 PUMA_CONFIG_FILE=$APP_PATH/config/puma.rb
 PUMA_PID_FILE=$APP_PATH/tmp/pids/puma.pid
 PUMA_SOCKET=$APP_PATH/tmp/sockets/puma.sock

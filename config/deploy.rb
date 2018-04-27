@@ -15,6 +15,7 @@ set :domain, 'root@45.77.22.76'
 set :deploy_to, '/root/wwwroot/ror.deploy'
 set :repository, 'git@github.com:virola/ror-events.git'
 set :branch, 'master'
+set :keep_releases, 3
 
 set :shared_paths, ['log', 'tmp/sockets', 'tmp/pids', 'public/uploads']
 set :shared_files, ['config/database.yml', 'config/secrets.yml']
@@ -40,45 +41,6 @@ task :logs do
   end
 end
 
-# Put any custom commands you need to run at setup
-# All paths in `shared_dirs` and `shared_paths` will be created on their own.
-task :setup do
-  # 在服务器项目目录的shared中创建log文件夹
-  command %{mkdir -p "#{fetch(:shared_path)}/log"}
-  command %{chmod g+rx,u+rwx "#{fetch(:shared_path)}/log"}
-
-  # 在服务器项目目录的shared中创建config文件夹 下同
-  command %{mkdir -p "#{fetch(:shared_path)}/config"}
-  command %{chmod g+rx,u+rwx "#{fetch(:shared_path)}/config"}
-
-  command %{touch "#{fetch(:shared_path)}/config/database.yml"}
-  command %{touch "#{fetch(:shared_path)}/config/secrets.yml"}
-
-  # puma.rb 配置puma必须得文件夹及文件
-  command %{mkdir -p "#{fetch(:deploy_to)}/shared/tmp/pids"}
-  command %{chmod g+rx,u+rwx "#{fetch(:deploy_to)}/shared/tmp/pids"}
-
-  command %{mkdir -p "#{fetch(:deploy_to)}/shared/tmp/sockets"}
-  command %{chmod g+rx,u+rwx "#{fetch(:deploy_to)}/shared/tmp/sockets"}
-
-  command %{touch "#{fetch(:deploy_to)}/shared/config/puma.rb"}
-  comment  %{-----> Be sure to edit 'shared/config/puma.rb'.}
-
-  # tmp/sockets/puma.state
-  command %{touch "#{fetch(:deploy_to)}/shared/tmp/sockets/puma.state"}
-  comment  %{-----> Be sure to edit 'shared/tmp/sockets/puma.state'.}
-
-  # log/puma.stdout.log
-  command %{touch "#{fetch(:deploy_to)}/shared/log/puma.stdout.log"}
-  comment  %{-----> Be sure to edit 'shared/log/puma.stdout.log'.}
-
-  # log/puma.stdout.log
-  command %{touch "#{fetch(:deploy_to)}/shared/log/puma.stderr.log"}
-  comment  %{-----> Be sure to edit 'shared/log/puma.stderr.log'.}
-
-  comment  %{-----> Be sure to edit '#{fetch(:shared_path)}/config/database.yml'.}
-end
-
 desc "Deploys the current version to the server."
 task :deploy do
   # uncomment this line to make sure you pushed your local branch to the remote origin
@@ -93,10 +55,10 @@ task :deploy do
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
-    # puma
-    invoke :'puma:restart'
-
     on :launch do
+      # puma
+      invoke :'puma:restart'
+
       # it's for passenger
       # in_path(fetch(:current_path)) do
       #   command %{mkdir -p tmp/}
@@ -115,10 +77,9 @@ end
 
 task :test do 
   comment %{----->testing...}
-  # deploy do
-  #   invoke :'git:clone'
-  #   invoke :'deploy:link_shared_paths'
-  # end
+  deploy do
+    invoke :'puma:start'
+  end
 end
 
 # For help in making your deploy script, see the Mina documentation:
@@ -133,8 +94,8 @@ namespace :puma do
   desc "Start the application"
   task :start do
     comment %{-----> Start Puma'} 
-    in_path("#{fetch(:deploy_to)}/current") do
-      command %{RAILS_ENV=#{fetch(:stage)} && bin/puma.sh start}, :pty => false
+    in_path("#{fetch(:current_path)}") do
+      command %{RAILS_ENV=#{fetch(:stage)} && bin/puma.sh start}
     end
     
   end
@@ -142,7 +103,7 @@ namespace :puma do
   desc "Stop the application"
   task :stop do
     comment %{-----> Stop Puma}
-    in_path("#{fetch(:deploy_to)}/current") do
+    in_path("#{fetch(:current_path)}") do
       command %{RAILS_ENV=#{fetch(:stage)} && bin/puma.sh stop}
     end
   end
@@ -150,7 +111,7 @@ namespace :puma do
   desc "Restart the application"
   task :restart do
     comment %{-----> Restart Puma}
-    in_path("#{fetch(:deploy_to)}/current") do
+    in_path("#{fetch(:current_path)}") do
       command %{RAILS_ENV=#{fetch(:stage)} && bin/puma.sh restart}
     end
     
