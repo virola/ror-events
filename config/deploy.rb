@@ -82,7 +82,7 @@ end
 desc "Deploys the current version to the server."
 task :deploy do
   # uncomment this line to make sure you pushed your local branch to the remote origin
-  invoke :'git:ensure_pushed'
+  # invoke :'git:ensure_pushed'
   deploy do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.
@@ -93,11 +93,15 @@ task :deploy do
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
+    # puma
+    invoke :'puma:restart'
+
     on :launch do
-      in_path(fetch(:current_path)) do
-        command %{mkdir -p tmp/}
-        command %{touch tmp/restart.txt}
-      end
+      # it's for passenger
+      # in_path(fetch(:current_path)) do
+      #   command %{mkdir -p tmp/}
+      #   command %{touch tmp/restart.txt}
+      # end
     end
 
     on :clean do
@@ -111,10 +115,10 @@ end
 
 task :test do 
   comment %{----->testing...}
-  deploy do
-    invoke :'git:clone'
-    invoke :'deploy:link_shared_paths'
-  end
+  # deploy do
+  #   invoke :'git:clone'
+  #   invoke :'deploy:link_shared_paths'
+  # end
 end
 
 # For help in making your deploy script, see the Mina documentation:
@@ -123,26 +127,33 @@ end
 
 # puma settings
 set :forward_agent, true
-set :app_path, lambda { "#{deploy_to}/#{current_path}" }
 set :stage, 'production'
 
 namespace :puma do 
   desc "Start the application"
   task :start do
-    queue 'echo "-----> Start Puma"'  
-    queue "cd #{app_path} && RAILS_ENV=#{stage} && bin/puma.sh start", :pty => false
+    comment %{-----> Start Puma'} 
+    in_path("#{fetch(:deploy_to)}/current") do
+      command %{RAILS_ENV=#{fetch(:stage)} && bin/puma.sh start}, :pty => false
+    end
+    
   end
 
   desc "Stop the application"
   task :stop do
-    queue 'echo "-----> Stop Puma"'
-    queue "cd #{app_path} && RAILS_ENV=#{stage} && bin/puma.sh stop"
+    comment %{-----> Stop Puma}
+    in_path("#{fetch(:deploy_to)}/current") do
+      command %{RAILS_ENV=#{fetch(:stage)} && bin/puma.sh stop}
+    end
   end
 
   desc "Restart the application"
   task :restart do
-    queue 'echo "-----> Restart Puma"'
-    queue "cd #{app_path} && RAILS_ENV=#{stage} && bin/puma.sh restart"
+    comment %{-----> Restart Puma}
+    in_path("#{fetch(:deploy_to)}/current") do
+      command %{RAILS_ENV=#{fetch(:stage)} && bin/puma.sh restart}
+    end
+    
   end
 end
 
