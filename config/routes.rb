@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   put 'profile/password_update', to: 'members#update_password'
 
   get 'events', to: 'events#all'
+  get 'index/today', to: 'index#index'
 
   # admin
   get 'admin', to: 'admin#index'

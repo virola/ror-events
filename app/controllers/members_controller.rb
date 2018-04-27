@@ -33,7 +33,7 @@ class MembersController < ApplicationController
     respond_to do |format|
       if !@member
         format.html { redirect_to profile_password_path, alert: '密码错误' }
-        format.json { render json: { message: '密码错误'}, status: :unprocessable_entity }
+        format.json { render json: { message: '密码错误', status: 'error'}, status: :unprocessable_entity }
       else
         new_params = {
           password: member_params[:new_password],

@@ -9,14 +9,14 @@ require 'mina/rvm'    # for rvm support. (https://rvm.io)
 #   deploy_to    - Path to deploy into.
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
-
-set :application_name, 'events-cal'
 set :domain, 'root@45.77.22.76'
 set :deploy_to, '/root/wwwroot/ror.deploy'
 set :repository, 'git@github.com:virola/ror-events.git'
 set :branch, 'master'
-set :keep_releases, 3
 
+
+
+set :keep_releases, 3
 set :shared_paths, ['log', 'tmp/sockets', 'tmp/pids', 'public/uploads']
 set :shared_files, ['config/database.yml', 'config/secrets.yml']
 

@@ -30,23 +30,33 @@ class ApplicationController < ActionController::Base
   # 必须是管理员或用户本人操作
   def authenticate_operation
     unless @_current_member && @_current_member.id < 4 || (@_current_member.id == params[:member_id])
-      flash[:alert] = '没有管理权限'
-      redirect_to root_path
+      @message = '没有管理权限'
+      respond_to do |format|
+        format.html { redirect_to new_session_path, alert: @message }
+        format.json { render json: { message: @message, status: 'error'}, status: :unprocessable_entity }
+      end
     end
   end
 
   def authenticate_admin
     unless @_current_member && @_current_member.id < 4
-      flash[:alert] = '没有管理权限'
-      redirect_to root_path
+      @message = '没有管理权限'
+      respond_to do |format|
+        format.html { redirect_to new_session_path, alert: @message }
+        format.json { render json: { message: @message, status: 'error'}, status: :unprocessable_entity }
+      end
     end
   end
   # 验证登录用户
   def authenticate_member
     # todo...
     unless @_current_member && @_current_member.id?
-      flash[:alert] = '请先登录'
-      redirect_to new_session_path
+      @message = '请先登录'
+      # redirect_to new_session_path
+      respond_to do |format|
+        format.html { redirect_to new_session_path, alert: @message }
+        format.json { render json: { message: @message, status: 'error'}, status: :unprocessable_entity }
+      end
     end
   end
 

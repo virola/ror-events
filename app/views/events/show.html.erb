@@ -23,7 +23,7 @@
   <strong>Member:</strong>
   <%= @event.member_id %>
 </p>
-
+<% if @_current_member && (@_current_member.id == @event.member_id || @_current_member.role == 'admin') -%>
 <%= link_to '编辑', edit_event_path(@event) %>
-
+<% end -%>
 </div>
