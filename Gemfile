@@ -13,9 +13,10 @@ gem 'kaminari'
 gem 'bcrypt', '~> 3.1.7'
 # i18n
 gem 'rails-i18n', '~> 5.1'
-
 # mina自动部署
 gem 'mina'
+# 环境变量设置
+gem 'dotenv-rails'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
