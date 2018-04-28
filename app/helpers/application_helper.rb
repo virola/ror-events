@@ -6,4 +6,13 @@ module ApplicationHelper
     options[:builder] = BootstrapFormBuilder
     form_for(object, options, &block)
   end
+
+  # json format
+  def j_format json, status = 200, errors = nil
+    json.status (status.between?(200, 300) ? 'ok' : status)
+    json.data do
+      yield if block_given?
+    end
+    json.message (errors ? errors : json.message)
+  end
 end

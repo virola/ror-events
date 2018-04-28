@@ -17,6 +17,8 @@ gem 'rails-i18n', '~> 5.1'
 gem 'mina'
 # 环境变量设置
 gem 'dotenv-rails'
+# 支持跨域中间件
+gem 'rack-cors', :require => 'rack/cors'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.11'

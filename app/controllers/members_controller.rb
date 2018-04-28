@@ -20,7 +20,7 @@ class MembersController < ApplicationController
         format.json { render :show, status: :ok, location: profile_path }
       else
         format.html { render :edit_info, alert: '更新失败，请稍后再试' }
-        format.json { render json: @member.errors, status: :unprocessable_entity }
+        format.json { render json: { message: @member.errors, status: :unprocessable_entity}, status: :unprocessable_entity }
       end
     end
   end
@@ -33,7 +33,7 @@ class MembersController < ApplicationController
     respond_to do |format|
       if !@member
         format.html { redirect_to profile_password_path, alert: '密码错误' }
-        format.json { render json: { message: '密码错误', status: 'error'}, status: :unprocessable_entity }
+        format.json { render json: { message: '密码错误', status: :unprocessable_entity}, status: :unprocessable_entity }
       else
         new_params = {
           password: member_params[:new_password],
@@ -44,7 +44,7 @@ class MembersController < ApplicationController
           format.json { render :profile, status: :ok, location: profile_path }
         else
           format.html { render :edit_password }
-          format.json { render json: @member.errors, status: :unprocessable_entity }
+          format.json { render json: { message: @member.errors, status: :unprocessable_entity}, status: :unprocessable_entity }
         end
       end
       
@@ -84,7 +84,7 @@ class MembersController < ApplicationController
         format.json { render :show, status: :created, location: @member }
       else
         format.html { render :new }
-        format.json { render json: @member.errors, status: :unprocessable_entity }
+        format.json { render json: { message: @member.errors, status: :unprocessable_entity }, status: :unprocessable_entity }
       end
     end
   end
@@ -98,7 +98,7 @@ class MembersController < ApplicationController
         format.json { render :show, status: :ok, location: @member }
       else
         format.html { render :edit }
-        format.json { render json: @member.errors, status: :unprocessable_entity }
+        format.json { render json: { message: @member.errors, status: :unprocessable_entity }, status: :unprocessable_entity }
       end
     end
   end
@@ -114,15 +114,15 @@ class MembersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_member
-      member_id = params[:id] || session[:current_member_id]
-      @member = Member.find(member_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_member
+    member_id = params[:id] || session[:current_member_id]
+    @member = Member.find(member_id)
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def member_params
-      params.require(:member).permit(:username, :password, :password_confirmation, 
-        :bio, :open_id, :union_id, :birthday, :new_password, :new_password_confirmation)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def member_params
+    params.require(:member).permit(:username, :password, :password_confirmation, 
+      :bio, :open_id, :union_id, :birthday, :new_password, :new_password_confirmation)
+  end
 end

@@ -53,7 +53,7 @@ class EventsController < ApplicationController
         format.json { render :show, status: :created, location: @event }
       else
         format.html { render :new }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
+        format.json { render json: { message: @event.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -67,7 +67,7 @@ class EventsController < ApplicationController
         format.json { render :show, status: :ok, location: @event }
       else
         format.html { render :edit }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
+        format.json { render json: { message: @event.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -83,11 +83,6 @@ class EventsController < ApplicationController
   end
 
   private
-  # 验证某个事件是否可见，针对show
-  def authenticate_public
-    
-  end
-  
 
   # Use callbacks to share common setup or constraints between actions.
   def set_member
