@@ -6,6 +6,6 @@ json.member do
   json.bio event.member.bio
 end
 # 管理员显示
-if @_current_member.role == 'admin'
+if @_current_member && @_current_member.role == 'admin'
   json.(event, :member_id, :created_at, :updated_at)
 end

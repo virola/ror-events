@@ -1,0 +1,39 @@
+
+<h2 class="title">~Events List~</h2>
+<% if @_current_member -%>
+<div class="operations">
+  <%= link_to 'New Event', new_member_event_path(session[:current_member_id]) %>
+</div>
+<% end -%>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Is public</th>
+      <th>Author</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @events.each do |event| %>
+      <tr>
+        <td><%= event.name %></td>
+        <td><%= event.description %></td>
+        <td><%= event.is_public %></td>
+        <td><%= event.member.username %></td>
+        <td>
+          <%= link_to 'Show', event, class: 'btn btn-primary' %>
+
+          <% if session[:current_member_id] && session[:current_member_id] == event.member_id -%>
+          <%= link_to 'Edit', edit_event_path(event), class: 'btn btn-primary' %>
+          <%= link_to 'Destroy', event, class: 'btn btn-primary', method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% end -%>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @events %>

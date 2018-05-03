@@ -29,8 +29,9 @@ class ApplicationController < ActionController::Base
   # 验证操作权限
   # 必须是管理员或用户本人操作
   def authenticate_operation
-    unless @_current_member && @_current_member.id < 4 || (@_current_member.id == params[:member_id])
-      @message = '没有管理权限'
+    # byebug
+    unless (session[:current_member_id] < 4 || session[:current_member_id] == params[:member_id].to_i)
+      @message = '没有操作权限'
       respond_to do |format|
         format.html { redirect_to new_session_path, alert: @message }
         format.json { render json: { message: @message, status: 'error'}, status: :unprocessable_entity }
