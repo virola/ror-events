@@ -1,7 +1,7 @@
 class MembersController < ApplicationController
-  before_action :authenticate_admin, only: [:index, :edit, :destroy, :show, :update]
+  before_action :authenticate_admin, only: [:index, :edit, :admin_password, :destroy, :show, :update]
   before_action :authenticate_member, only: [:profile, :edit_info, :update_info, :edit_password]
-  before_action :set_member, only: [:show, :edit, :update, :destroy, 
+  before_action :set_member, only: [:show, :edit, :update, :destroy, :admin_password,
                 :profile, :edit_info, :update_info, :edit_password]
 
   # 普通用户使用
@@ -72,6 +72,10 @@ class MembersController < ApplicationController
   # GET /members/1/edit
   def edit
   end
+
+  # GET /members/:id/admin_password
+  def admin_password
+  end
   # POST /members
   # POST /members.json
   def create
@@ -122,7 +126,7 @@ class MembersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def member_params
-    params.require(:member).permit(:username, :password, :password_confirmation, 
+    params.require(:member).permit(:username, :nickname, :password, :password_confirmation, 
       :bio, :open_id, :union_id, :birthday, :new_password, :new_password_confirmation)
   end
 end

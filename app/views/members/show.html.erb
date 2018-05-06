@@ -3,7 +3,10 @@
   <strong>Username:</strong>
   <%= @member.username %>
 </p>
-
+<p>
+  <strong>Nickname:</strong>
+  <%= @member.nickname %>
+</p>
 <p>
   <strong>Bio:</strong>
   <%= @member.bio %>
@@ -25,6 +28,7 @@
 </p>
 
 <%= link_to 'Edit', edit_member_path(@member) %> |
+<%= link_to 'Reset Password', password_member_path(@member) %> |
 <%= link_to 'Back', members_path %> |
 <%= link_to 'Show events', member_events_path(@member) %>
 

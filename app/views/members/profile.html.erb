@@ -12,6 +12,10 @@
   <strong><%= t 'member.wechat' %>:</strong>
   <%= @member.open_id ? '已授权': '未授权' %>
 </p>
+<p>
+  <strong><%= t 'member.nickname' %>:</strong>
+  <%= @member.nickname %>
+</p>
 
 <p>
   <strong><%= t('member.birthday') %>:</strong>

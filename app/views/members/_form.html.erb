@@ -2,8 +2,7 @@
   <%= form.error_messages %>
 
   <%= form.text_field :username, class: 'form-control', :autofocus => true, :required => true %>
-  <%= form.password_field :password, class: 'form-control', :required => true %>
-  <%= form.password_field :password_confirmation, class: 'form-control', :required => true %>
+  <%= form.text_field :nickname, class: 'form-control', :required => true %>
   <%= form.text_area :bio, class: 'form-control' %>
   <%= form.text_field :open_id, class: 'form-control' %>
   <%= form.text_field :union_id, class: 'form-control' %>

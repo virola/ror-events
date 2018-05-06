@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  # devise_for :members
   # resources :events
   resources :members, shallow: true do
     resources :events
   end
+  get 'members/:id/password', to: 'members#admin_password', as: 'password_member'
 
   resources :sessions, only: [:new, :create, :destroy]
   post 'sessions/login_open_id', to: 'sessions#login_open_id'
