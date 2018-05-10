@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :members, shallow: true do
     resources :events
   end
+  # resources :events
   get 'members/:id/password', to: 'members#admin_password', as: 'password_member'
 
   resources :sessions, only: [:new, :create, :destroy]
@@ -17,8 +18,9 @@ Rails.application.routes.draw do
   patch 'profile/password_update', to: 'members#update_password'
   put 'profile/password_update', to: 'members#update_password'
 
-  get 'events', to: 'events#all'
-  get 'index/today', to: 'index#events'
+  get 'admin/events', to: 'events#all'
+  get 'index/events', to: 'index#events'
+  get 'index/count', to: 'index#count'
 
   # admin
   get 'admin', to: 'admin#index'

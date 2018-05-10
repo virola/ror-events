@@ -21,6 +21,7 @@ zh-CN:
       next: '下一页'
       first: '首页'
       last: '末页'
+      truncate: '...'
   activerecord:
     models:
       member: '用户'

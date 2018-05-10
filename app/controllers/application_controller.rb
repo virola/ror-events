@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   # 必须是管理员或用户本人操作
   def authenticate_operation
     # byebug
-    unless (session[:current_member_id] < 4 || session[:current_member_id] == params[:member_id].to_i)
+    unless session[:current_member_id] && (session[:current_member_id] < 4 || session[:current_member_id] == params[:member_id].to_i)
       @message = '没有操作权限'
       respond_to do |format|
         format.html { redirect_to new_session_path, alert: @message }

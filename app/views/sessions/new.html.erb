@@ -2,8 +2,6 @@
  
 <h1><%= t(:login)%> </h1> 
 <%= bootstrap_form_for :session, url: sessions_path do |f| %>
-  <%= f.text_field :open_id, class: 'form-control' %>
-  or
   <%= f.text_field :username, class: 'form-control' %>
  
   <%= f.password_field :password, class: 'form-control' %>
