@@ -3,7 +3,13 @@ Rails.application.routes.draw do
   resources :members, shallow: true do
     resources :events
   end
-  # resources :events
+  namespace :api do
+    namespace :v1 do
+      resources :sessions, only: [:create]
+      resources :members
+    end
+  end
+
   get 'members/:id/password', to: 'members#admin_password', as: 'password_member'
 
   resources :sessions, only: [:new, :create, :destroy]

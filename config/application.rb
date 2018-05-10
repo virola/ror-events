@@ -27,6 +27,8 @@ module EventsCal
         resource '*', :headers => :any, :methods => [:get, :post, :options]
       end
     end
+    config.middleware.delete Rack::Lock
+    
     # form builders
     config.autoload_paths << Rails.root.join('app', 'form_builders')
     # 语言设置
