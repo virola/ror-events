@@ -56,7 +56,7 @@ class SessionsController < ApplicationController
   
  
   # 登录
-  # POST /sessions/create
+  # POST /sessions/:id
   def create
     if !member_params[:username].blank?
       @member = Member.find_by(username: member_params[:username]).try(:authenticate, member_params[:password])
@@ -79,6 +79,8 @@ class SessionsController < ApplicationController
     end
   end
 
+  # 登录
+  # DELETE /sessions/:id
   def destroy
     session[:current_member_id] = nil
     session[:current_username] = nil
