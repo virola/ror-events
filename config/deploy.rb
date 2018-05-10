@@ -10,7 +10,7 @@ require 'mina/rvm'    # for rvm support. (https://rvm.io)
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
 set :domain, 'root@45.77.22.76'
-set :deploy_to, '/root/wwwroot/ror.deploy'
+set :deploy_to, '/home/wwwroot/ror.deploy'
 set :repository, 'git@github.com:virola/ror-events.git'
 set :branch, 'master'
 
