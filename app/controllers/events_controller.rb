@@ -1,14 +1,15 @@
 class EventsController < ApplicationController
   # before_action :authenticate_public, only: [:show]
-  before_action :authenticate_operation, except: [:show]
-  before_action :authenticate_admin, only: [:all]
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :set_member, only: [:index, :create, :new]
+  # auth
+  before_action :authenticate_operation, except: [:show]
+  before_action :authenticate_admin, only: [:all]
 
   # GET /events/all
   # GET /events/all.json
   def all
-    @events = Event.order(updated_at: :desc).page(params[:page]).per(5)
+    @events = Event.order(updated_at: :desc).page(params[:page]).per(10)
   end
 
   # GET /members/:member_id/events
@@ -40,6 +41,13 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
+    # unless (session[:current_member_id] && session[:current_member_id] < 4) || session[:current_member_id] == @event.member_id
+    #   @message = '没有操作权限'
+    #   respond_to do |format|
+    #     format.html { redirect_to new_session_path, alert: @message }
+    #     format.json { render json: { message: @message, status: 'error'}, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # POST /events
@@ -67,7 +75,7 @@ class EventsController < ApplicationController
         format.json { render :show, status: :ok, location: @event }
       else
         format.html { render :edit }
-        format.json { render json: { message: @event.errors }, status: :unprocessable_entity }
+        format.json { render json: { message: @event.errors, status: 'error' }, status: :unprocessable_entity }
       end
     end
   end
@@ -78,11 +86,23 @@ class EventsController < ApplicationController
     @event.destroy
     respond_to do |format|
       format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }
-      format.json { head :no_content }
+      format.json { render json: { message: @event.errors, status: 'error'}, status: :unprocessable_entity }
     end
   end
 
   private
+  # 验证操作权限
+  # 必须是管理员或用户本人操作
+  def authenticate_operation
+    # byebug
+    unless session[:current_member_id] && (session[:current_member_id] < 4 || session[:current_member_id] == params[:member_id].to_i || session[:current_member_id] == @event.member_id)
+      @message = '没有操作权限'
+      respond_to do |format|
+        format.html { redirect_to new_session_path, alert: @message }
+        format.json { render json: { message: @message, status: 'error'}, status: :unprocessable_entity }
+      end
+    end
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_member

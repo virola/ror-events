@@ -1,14 +1,18 @@
 class IndexController < ApplicationController
+  def pagesize
+    10
+  end
+  
   def index
     if @_current_member
       @events = Event.where(:date => Time.now.at_beginning_of_day)
         .where('is_public = true OR (is_public = false AND member_id = ?)', @_current_member.id)
-        .order(updated_at: :desc).page(params[:page]).per(5)
+        .order(updated_at: :desc).page(params[:page]).per(pagesize)
     else
       @events = Event.where(
         :date => Time.now.at_beginning_of_day,
         :is_public => true 
-      ).order(updated_at: :desc).page(params[:page]).per(5)
+      ).order(updated_at: :desc).page(params[:page]).per(pagesize)
     end
   end
 
@@ -22,12 +26,12 @@ class IndexController < ApplicationController
     if @_current_member
       @events = Event.where(:date => @date_param)
         .where('is_public = true OR (is_public = false AND member_id = ?)', @_current_member.id)
-        .order(updated_at: :desc).page(params[:page]).per(5)
+        .order(updated_at: :desc).page(params[:page]).per(pagesize)
     else
       @events = Event.where(
         :date => @date_param,
         :is_public => true 
-      ).order(updated_at: :desc).page(params[:page]).per(5)
+      ).order(updated_at: :desc).page(params[:page]).per(pagesize)
     end
   end
   
