@@ -1,9 +1,6 @@
 body {
   background-color: #fff;
   margin: 0;
-  // font-family: verdana, arial, helvetica, sans-serif;
-  // font-size: 13px;
-  // line-height: 18px;
 }
 
 pre {
@@ -44,3 +41,12 @@ pre {
   }
 }
 
+.footer {
+  margin-top: 30px;
+  background: #f7f7f7;
+  font-size: 85%;
+  a {
+    font-weight: 500;
+    color: #495057;
+  }
+}
