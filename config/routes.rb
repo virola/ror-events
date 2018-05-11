@@ -3,12 +3,20 @@ Rails.application.routes.draw do
   resources :members, shallow: true do
     resources :events
   end
+
+  # API for clients
   namespace :api do
     namespace :v1 do
-      resources :sessions, only: [:create]
-      resources :members
+      resources :sessions, only: [:create, :destroy]
+      resources :members, only: [:index, :create, :show, :update, :destroy]
+      resources :events, only: [:index, :create, :show, :update, :destroy]
+      
+      post 'session/login', to: 'sessions#wx_login'
+      get 'index/events', to: 'index#events'
+      get 'index/count', to: 'index#count'
     end
   end
+  # API for clients END
 
   get 'members/:id/password', to: 'members#admin_password', as: 'password_member'
 

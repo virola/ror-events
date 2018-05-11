@@ -8,20 +8,33 @@ class Api::V1::MembersController < Api::V1::BaseController
   def show
   end
 
+  # POST /members
+  # POST /members.json
+  def create
+    @member = Member.new(member_params)
+
+    respond_to do |format|
+      if @member.save
+        format.json { render :show, status: :created, location: @member }
+      else
+        return api_error(status: :unprocessable_entity, message: @member.errors)
+      end
+    end
+  end
+
   # PATCH/PUT /members/1
   # PATCH/PUT /members/1.json
   def update
     # byebug 
     respond_to do |format|
-      # byebug
       if self.current_member && self.current_member.id == params[:id].to_i
         if @member.update(member_params)
           format.json { render :show, status: :ok, location: @member }
         else
-          format.json { render json: { message: @member.errors, status: :unprocessable_entity }, status: :unprocessable_entity }
+          return api_error(status: :unprocessable_entity, message: @member.errors)
         end
       else
-        format.json { render json: { message: '没有操作权限', status: :unprocessable_entity }, status: :unprocessable_entity }
+        return api_error(status: 401, message: '没有操作权限')
       end
     end
   end

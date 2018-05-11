@@ -15,7 +15,6 @@ class EventsController < ApplicationController
   # GET /members/:member_id/events
   # GET /members/:member_id/events.json
   def index
-    # @member = Member.
     @events = Event.where(member_id: params[:member_id]).order(updated_at: :desc).page(params[:page]).per(5)
   end
 
@@ -41,13 +40,6 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
-    # unless (session[:current_member_id] && session[:current_member_id] < 4) || session[:current_member_id] == @event.member_id
-    #   @message = '没有操作权限'
-    #   respond_to do |format|
-    #     format.html { redirect_to new_session_path, alert: @message }
-    #     format.json { render json: { message: @message, status: 'error'}, status: :unprocessable_entity }
-    #   end
-    # end
   end
 
   # POST /events
@@ -86,7 +78,7 @@ class EventsController < ApplicationController
     @event.destroy
     respond_to do |format|
       format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }
-      format.json { render json: { message: @event.errors, status: 'error'}, status: :unprocessable_entity }
+      format.json { render json: { message: @event.errors, status: 'ok'}, status: :ok }
     end
   end
 
