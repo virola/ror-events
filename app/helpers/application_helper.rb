@@ -15,4 +15,15 @@ module ApplicationHelper
     end
     json.message (errors ? errors : json.message)
   end
+
+  # format
+  def date_text_format(date, fmt = '%Y-%m-%d')
+    # byebug
+    if !date.blank?
+      date.strftime(fmt)
+    else
+      time = Time.now
+      time.strftime(fmt)
+    end
+  end
 end

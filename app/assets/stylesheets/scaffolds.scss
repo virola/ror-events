@@ -8,6 +8,11 @@ pre {
   padding: 10px;
   font-size: 11px;
 }
+table td {
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+}
 .pagination {
   margin: 20px 0;
 }

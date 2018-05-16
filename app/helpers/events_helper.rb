@@ -1,6 +1,5 @@
 module EventsHelper
   def date_format(date)
-    
     # byebug
     if !date.blank?
       time = Time.now

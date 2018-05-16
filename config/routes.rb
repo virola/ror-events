@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       post 'session/login', to: 'sessions#wx_login'
       get 'index/events', to: 'index#events'
       get 'index/count', to: 'index#count'
+      get 'index/mine', to: 'index#mine'
     end
   end
   # API for clients END

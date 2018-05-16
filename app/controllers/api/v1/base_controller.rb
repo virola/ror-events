@@ -58,4 +58,14 @@ class Api::V1::BaseController < ApplicationController
     api_error(status: 401, message: '没有操作权限')
   end
 
+  # format
+  def date_text_format(date, fmt = '%Y-%m-%d')
+    # byebug
+    if !date.blank?
+      date.strftime(fmt)
+    else
+      time = Time.now
+      time.strftime(fmt)
+    end
+  end
 end

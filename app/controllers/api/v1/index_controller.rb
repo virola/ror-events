@@ -3,9 +3,9 @@ class Api::V1::IndexController < Api::V1::BaseController
     10
   end
 
-  before_action :auth_token_member!, only: [:events, :count]
+  before_action :auth_token_member!, only: [:events, :count, :mine]
   
-  #GET 'api/v1/index/events.json?date=2018-05-03'
+  #GET api/v1/index/events.json?date=2018-05-03
   def events
     if params[:date].blank?
       @date_param = Time.now.at_beginning_of_day
@@ -24,7 +24,7 @@ class Api::V1::IndexController < Api::V1::BaseController
     end
   end
 
-  # 'api/v1/index/count.json'
+  # api/v1/index/count.json
   # 前后各3天，总7天的事件数目统计
   def count
     today = Date.today
@@ -51,4 +51,19 @@ class Api::V1::IndexController < Api::V1::BaseController
     end
   end
 
+  # get api/v1/index/mine.json?date=2018-05-03
+  # 获取登录用户今天的事件
+  def mine
+    if params[:date].blank?
+      @date_param = date_text_format(Time.now.at_beginning_of_day)
+    else
+      @date_param = params[:date]
+    end
+    if @current_member
+      @events = Event.where(:date => @date_param, :member_id => @current_member.id)
+        .order(updated_at: :desc).page(params[:page]).per(5)
+    else
+      @events = []
+    end
+  end
 end
