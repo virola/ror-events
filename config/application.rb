@@ -18,15 +18,15 @@ module EventsCal
     # the framework and any gems in your application.
     # config.assets.precompile += %w(....)
     # rack for foreign ajax
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        # 可以接受字符串数组或者是正则表达式 
-        # origins 'localhost',
-        #     /\Ahttp:\/\/127\.0\.0\.\d{1,3}(:\d+)?\z/
-        origins '*'
-        resource '*', :headers => :any, :methods => [:get, :post, :options]
-      end
-    end
+    # config.middleware.insert_before 0, Rack::Cors do
+    #   allow do
+    #     # 可以接受字符串数组或者是正则表达式 
+    #     # origins 'localhost',
+    #     #     /\Ahttp:\/\/127\.0\.0\.\d{1,3}(:\d+)?\z/
+    #     origins '*'
+    #     resource '*', :headers => :any, :methods => [:get, :post, :options]
+    #   end
+    # end
     config.middleware.delete Rack::Lock
     
     # form builders

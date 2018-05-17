@@ -26,7 +26,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
           :password => @default_password
         }
         # 先去检索用户是否已存在
-        @member = Member.find_by(open_id: member_params[:open_id])
+        @member = Member.find_by(open_id: @member_params[:open_id])
         if @member 
           format.json { render :create, status: :ok }
         else
@@ -52,9 +52,9 @@ class Api::V1::SessionsController < Api::V1::BaseController
     # 小程序ID
     appid = ENV['WX_APP_ID']
     appsecret = ENV['WX_APP_SECRET']
-
+    # puts 'weixin ENV params:', appid, appsecret
     code = wx_params[:code]
-    if code.blank?
+    if code.blank? || appid.blank? || appsecret.blank?
       return api_error(status: 402, message: '参数错误')
     else
       url = 'https://api.weixin.qq.com/sns/jscode2session' + "?appid=#{appid}&secret=#{appsecret}&js_code=#{code}&grant_type=authorization_code"
@@ -82,7 +82,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
   end
   # 微信小程序API准入参数
   def wx_params
-    params.permit(:code, :nickname)
+    params.require(:session).permit(:code, :nickname)
   end
   
   def member_params

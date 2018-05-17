@@ -18,7 +18,7 @@ set :branch, 'master'
 
 set :keep_releases, 3
 set :shared_paths, ['log', 'tmp/sockets', 'tmp/pids', 'public/uploads']
-set :shared_files, ['config/database.yml', 'config/secrets.yml']
+set :shared_files, ['config/database.yml', 'config/secrets.yml', '.env']
 
 task :remote do
   # If you're using rbenv, use this to load the rbenv environment.
