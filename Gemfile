@@ -5,6 +5,8 @@ ruby '2.5.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.0'
+# 环境变量设置
+gem 'dotenv-rails'
 # mysql数据库
 gem 'mysql2'
 # pager
@@ -15,12 +17,12 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'rails-i18n', '~> 5.1'
 # mina自动部署
 gem 'mina'
-# 环境变量设置
-gem 'dotenv-rails'
 # 支持跨域中间件
 gem 'rack-cors', :require => 'rack/cors'
 # websocket
 gem 'websocket-rails'
+# http request
+gem 'httparty'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.11'

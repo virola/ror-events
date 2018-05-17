@@ -40,7 +40,7 @@ rails server
 编辑`mina`配置文件 `config/deploy.rb`:
 ```ruby
 set :domain, 'root@servername'
-set :deploy_to, '/root/wwwroot/ror.deploy'
+set :deploy_to, '/home/wwwroot/ror.deploy'
 set :repository, 'git@github.com:virola/ror-events.git'
 set :branch, 'master'
 ```
@@ -50,7 +50,7 @@ set :branch, 'master'
 
 ### nginx 转发配置
 ```
-upstream deploy {                                                                         server unix:///home/wwwroot/ror.deploy/shared/tmp/sockets/puma.sock;
+upstream deploy {                                                                    server unix:///home/wwwroot/ror.deploy/shared/tmp/sockets/puma.sock;
 }
 server {   
   listen 80; 
@@ -61,7 +61,7 @@ server {
 
   location / { 
     # match the name of upstream directive which is defined above
-    proxy_pass http://127.0.0.1:3000; 
+    proxy_pass http://deploy; 
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
   }   
@@ -84,13 +84,3 @@ server {
 - ruby 2.5.1
 - Rails 5.2.0 
 
-## dependencies
-```yml
-# Gemfile
-# 分页插件
-gem 'kaminari'
-# 密码加密
-gem 'bcrypt', '~> 3.1.7'
-# 国际化 i18n
-gem 'rails-i18n', '~> 5.1'
-```

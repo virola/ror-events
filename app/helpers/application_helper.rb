@@ -14,6 +14,9 @@ module ApplicationHelper
       yield if block_given?
     end
     json.message (errors ? errors : json.message)
+    if session[:session_key]
+      json.session session[:session_key]
+    end
   end
 
   # format
