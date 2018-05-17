@@ -18,10 +18,11 @@ class Api::V1::SessionsController < Api::V1::BaseController
       if @session && !@session[:session_key].blank?
         # session[:session_key] = wx_params[:session_key]
         @member_params = {
-          :nickname => wx_params[:nickname],
+          # 昵称去掉前后空白符
+          :nickname => wx_params[:nickname].strip,
           :open_id => @session[:open_id],
           :union_id => @session[:union_id] || @session[:session_key],
-          :username => 'wx_' + wx_params[:nickname] + '_' + wx_params[:session_key][0..5],
+          :username => 'wx_' + wx_params[:nickname].gsub(' ','') + '_' + @session[:open_id][0..5],
           :password => @default_password
         }
         # 先去检索用户是否已存在
@@ -62,7 +63,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
       # puts response.body, response.code, response.message, response.headers.inspect
       if response.code == 200
         @res = JSON.parse response.body, symbolize_names: true
-        puts @res
+        puts '----> WEIXIN API request....', @res
         if @res[:errcode] && @res[:errcode] > 0
           return api_error(status: @res[:errcode], message: @res[:errmsg])
         else
@@ -81,7 +82,7 @@ class Api::V1::SessionsController < Api::V1::BaseController
   end
   # 微信小程序API准入参数
   def wx_params
-    params.require(:session).permit(:code, :nickname)
+    params.permit(:code, :nickname)
   end
   
   def member_params
